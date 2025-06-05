@@ -1,19 +1,19 @@
 import { defineConfig } from 'vite';
-// import ViteEjsPlugin from 'vite-plugin-ejs';
-import ejs from 'vite-plugin-ejs';
+import path from 'path';
 
 export default defineConfig({
-    plugins: [ejs],
-    build: {
-        outDir: 'dist',
-        assetsDir: 'assets'
-    },
-    server: {
-        proxy: {
-            '/': {
-                target: 'http://localhost:3000',
-                changeOrigin: true
-            }
-        }
+  build: {
+    outDir: 'public/js',
+    rollupOptions: {
+      input: './src/js/main.js',
+      output: {
+        entryFileNames: 'bundle.js'
+      }
     }
+  },
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, 'src')
+    }
+  }
 });

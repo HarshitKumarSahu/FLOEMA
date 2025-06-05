@@ -1,39 +1,31 @@
-const express = require('express');
-const path = require('path');
-const products = require('./data/data');
+import express from 'express';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import expressLayouts from 'express-ejs-layouts';
+import indexRouter from './routes/index.js';
+import productsRouter from './routes/products.js';
 
 const app = express();
-const port = 3000;
-
-// Middleware
-app.use(express.static(path.join(__dirname, 'public')));
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Set EJS as view engine
-app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
+
+// Use express-ejs-layouts
+app.use(expressLayouts);
+app.set('layout', 'layouts/main');
+app.set('layout extractScripts', true);
+app.set('layout extractStyles', true);
+
+// Serve static files
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Routes
-app.get('/', (req, res) => {
-    res.render('index', { title: 'Floema Home' });
-});
+app.use('/', indexRouter);
+app.use('/products', productsRouter);
 
-app.get('/about', (req, res) => {
-    res.render('about', { title: 'About Floema' });
-});
-
-app.get('/collections', (req, res) => {
-    res.render('collections', { title: 'Collections', products });
-});
-
-// app.get('/collections/:slug', (req, res) => {
-//     const product = products.find(p => p.slug === req.params.slug);
-//     if (product) {
-//         res.render('collection', { title: product.name, product });
-//     } else {
-//         res.status(404).send('Collection not found');
-//     }
-// });
-
-app.listen(port, () => {
-    console.log(`Server running at http://localhost:${port}`);
-});
+// Start server
+const PORT = 3000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

@@ -1,7 +1,63 @@
-
+<!-- 
 <h1>Collections</h1>
 <ul>
   <% collections.forEach(collection => { %>
-    <li><a href="/collections/<%= collection.id %>"><%= collection.name %> - $<%= collection.price %></a></li>
+    <li><a href="/collections/<%= collection.id %>"><%= collection.data.title %> - $<%= collection.data.link_text %></a></li>
   <% }) %>
-</ul>
+</ul> -->
+<div class="collections" data-background="#BC978C" data-color="#F9F1E7">
+  <div class="collections__wrapper">
+    <div class="collections__titles">
+      <% [0, 1, 2].forEach(function(line) { %>
+        <div class="collections__titles__wrapper">
+          <% collections.forEach(function(collection, index) { %>
+            <div class="collections__titles__item">
+              <div class="collections__titles__label">
+                <div class="home__titles__label__text"><%- `${home.data.collection}<br>${String(index + 1).padStart(2, '0')}` %></div>
+              </div>
+              <div class="collections__titles__title">
+                <div class="collections__titles__title__text"><%= collection.data.title %></div>
+              </div>
+            </div>
+          <% }) %>
+        </div>
+      <% }) %>
+    </div>
+
+    <div class="collections__gallery">
+      <div class="collections__gallery__wrapper">
+        <% collections.forEach(function(collection, index) { %>
+          <% collection.data.products.forEach(function(product) { %>
+            <a class="collections__gallery__link" data-index="<%= index %>" href="/products/<%= product.products_product.id %>">
+              <figure class="collections__gallery__media" data-index="<%= index %>">
+                <img class="collections__gallery__media__image"
+                  alt="<%= product.products_product.data.image.alt %>"
+                  data-src="<%= product.products_product.data.image.url %>"
+              </figure>
+            </a>
+          <% }) %>
+        <% }) %>
+      </div>
+    </div>
+
+    <div class="collections__content">
+      <% collections.forEach(function(collection, index) { %>
+        <article class="collections__article <%= index === 0 ? 'collections__article--active' : '' %>">
+          <h2 class="collections__article__title">
+            <span class="collections__article__title__text"><%= `${collection.data.title} ${home.data.collection}` %></span>
+          </h2>
+          <p class="collections__article__description"><%- collection.data.description.replace(/\n/g, '<br>') %></p>
+        </article>
+      <% }) %>
+    </div>
+
+    <div class="collections__mobile">
+      <% collections.forEach(function(collection, index) { %>
+        <div class="collections__mobile__item">
+          <div class="collections__mobile__item__label"><%- `${home.data.collection}<br>${String(index + 1).padStart(2, '0')}` %></div>
+          <div class="collections__mobile__item__title"><%= collection.data.title %></div>
+        </div>
+      <% }) %>
+    </div>
+  </div>
+</div>

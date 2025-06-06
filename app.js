@@ -3,7 +3,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import expressLayouts from 'express-ejs-layouts';
 import indexRouter from './routes/index.js';
-import productsRouter from './routes/products.js';
+import collectionsRouter from './routes/collections.js';
 
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
@@ -24,8 +24,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Routes
 app.use('/', indexRouter);
-app.use('/products', productsRouter);
+app.use('/collections', collectionsRouter);
 
 // Start server
-const PORT = 3000;
+const PORT = 8080;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

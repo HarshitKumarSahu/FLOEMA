@@ -1,22 +1,145 @@
-<!DOCTYPE html>
-<html lang="en">
+<div class="about">
+    <div class="about_wrapper">
+        <section class="about_gallery">
+            <div class="about_gallery_wrapper">
+                <% about.data.gallery.forEach(function(media) { %>
+                    <figure class=".about_gallery_media">
+                        <img class="about_gallery_media_image" src="<%= media.image.url %>" alt=<%= media.image.alt %>>
+                    </figure>
+                <% }) %>
+            </div>
+        </section>
+        <% about.data.body.forEach(function(section, index) { %>
+            <!-- include all the title -->
+            <% if (section.slice_type === 'title') { %>
+                <h2 class="about_title"><%- section.primary.text.replace(/\n/g, '<br>') %></h2>
+            <% } %>
+            
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>
-        <%= title %>
-    </title>
-    <link rel="stylesheet" href="/css/style.css">
-</head>
+            <% if (section.slice_type === 'content') { %>
+                <section class="about_content <%= section.primary.type === 'Left' ? 'about__content--left' : 'about__content--right' %>">
+                    <div class="about_content_wrapper">
+                        <div class="about_content_box">
+                            <p class="about_content_label"><%- section.primary.label %></p>
+                            <div class="about_content_description" data-animation="paragraph">
+                                <% section.primary.description.forEach(function(item) { %>
+                                    <% if (item.type === 'paragraph') { %>
+                                        <p><%= item.text %></p>
+                                    <% } %>
+                                <% }) %>
+                            </div>         
+                        </div>
+                        <figure class="about_content_media" data-animation="parallax">
+                            <img class="about_content_media_image" alt="<%= section.primary.image.alt %>" data-src="<%= section.primary.image.url %>">
+                        </figure>
+                    </div>
+                </section>
+            <% } %>
 
-<body>
-    <%- include('partials/header') %>
-        <main>
-            <h1>about</h1>
-        </main>
-        <%- include('partials/footer') %>
-    <script type="module" src="/js/main.js"></script>
-</body>
+            <% if (section.slice_type === 'highlight') { %>
+                <section class="about_highlight">
+                    <div class="about_highlight__wrapper">
+                        <a class="about_highlight_link" href="<%= section.primary.link.url %>" target="_blank">
+                            <% if (section.primary.label) { %>
+                                <p class="about_highlight_label" data-animation="paragraph"><%= section.primary.label %></p>
+                            <% } %>
+                            <h3 class="about_highlight_title" data-animation="highlight"><%= section.primary.title %></h3>
+                        </a>
+                        <div class="about_highlight_medias">
+                            <% section.items.forEach(function(media, mediaIndex) { %>
+                                <figure class="about_highlight_media" data-animation="parallax">
+                                    <img class="about_highlight_media_image" alt="<%= media.image.alt %>" data-src="<%= media.image.url %>">
+                                </figure>
+                            <% }) %>
+                        </div>
+                    </div>
+                </section>
+            <% } %>
 
-</html>
+
+            <% if (section.slice_type === 'gallery') { %>
+                <section class="about_gallery">
+                    <div class="about_gallery_wrapper">
+                        <% section.items.forEach(function(media) { %>
+                            <figure class="about_gallery_media">
+                                <img class="about_gallery_media_image" alt="<%= media.image.alt %>" data-src="<%= media.image.url %>">
+                            </figure>
+                        <% }) %>
+                    </div>
+                </section>
+            <% } %>
+        <% }) %>
+    </div>
+</div>
+
+<!-- 
+<div class="about" data-background="#B2B8C3" data-color="#37384C">
+  <div class="about__wrapper">
+    <section class="about__gallery">
+      <div class="about__gallery__wrapper">
+        <% about.data.gallery.forEach(function(media) { %>
+          <figure class="about__gallery__media">
+            <img class="about__gallery__media__image" alt="<%= media.image.alt %>" data-src="<%= media.image.url %>">
+          </figure>
+        <% }) %>
+      </div>
+    </section>
+
+    <% about.data.body.forEach(function(section, index) { %>
+      <% if (section.slice_type === 'title') { %>
+        <h2 class="about__title" data-animation="paragraph"><%- section.primary.text.replace(/\n/g, '<br>') %></h2>
+      <% } %>
+
+      <% if (section.slice_type === 'content') { %>
+        <section class="about__content <%= section.primary.type === 'Left' ? 'about__content--left' : 'about__content--right' %>">
+          <div class="about__content__wrapper">
+            <div class="about__content__box">
+              <p class="about__content__label" data-animation="paragraph"><%- section.primary.label %></p>
+
+            </div>
+            <figure class="about__content__media" data-animation="parallax">
+              <img class="about__content__media__image" alt="<%= section.primary.image.alt %>" data-src="<%= section.primary.image.url %>">
+            </figure>
+          </div>
+        </section>
+      <% } %>
+
+      <% if (section.slice_type === 'highlight') { %>
+        <section class="about__highlight">
+          <div class="about__highlight__wrapper">
+            <a class="about__highlight__link" href="<%= section.primary.link.url %>" target="_blank">
+              <% if (section.primary.label) { %>
+                <p class="about__highlight__label" data-animation="paragraph"><%= section.primary.label %></p>
+              <% } %>
+              <h3 class="about__highlight__title" data-animation="highlight"><%= section.primary.title %></h3>
+            </a>
+            <div class="about__highlight__medias">
+              <% section.items.forEach(function(media, mediaIndex) { %>
+                <figure class="about__highlight__media" data-animation="parallax">
+                  <img class="about__highlight__media__image" alt="<%= media.image.alt %>" data-src="<%= media.image.url %>">
+                </figure>
+              <% }) %>
+            </div>
+          </div>
+        </section>
+      <% } %>
+
+      <% if (section.slice_type === 'gallery') { %>
+        <section class="about__gallery">
+          <div class="about__gallery__wrapper">
+            <% section.items.forEach(function(media) { %>
+              <figure class="about__gallery__media">
+                <img class="about__gallery__media__image" alt="<%= media.image.alt %>" data-src="<%= media.image.url %>">
+              </figure>
+            <% }) %>
+          </div>
+        </section>
+      <% } %>
+    <% }) %>
+
+    <footer class="about__footer">
+      <div class="about__footer__copyright"><%- about.data.footer_copyright %></div>
+      
+    </footer>
+  </div>
+</div> -->

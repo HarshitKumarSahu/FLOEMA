@@ -1,0 +1,7 @@
+
+<h1>Collections</h1>
+<ul>
+  <% collections.forEach(collection => { %>
+    <li><a href="/collections/<%= collection.id %>"><%= collection.name %> - $<%= collection.price %></a></li>
+  <% }) %>
+</ul>

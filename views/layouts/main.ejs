@@ -7,11 +7,12 @@
   <link rel="stylesheet" href="/css/main.css">
 </head>
 <body>
-  <%- include('../partials/header') %>
+  <%- include("../partials/preloader") %>
+  <%- include('../partials/navigation') %>
+
   <main>
     <%- body %>
   </main>
-  <%- include('../partials/footer') %>
   <script src="/js/bundle.js" type="module"></script>
 </body>
 </html>
